@@ -52,9 +52,9 @@ public class GUI extends JPanel implements ClipboardOwner {
 	private static JFrame frame;
 
 	protected JFileChooser fileChooser;
-	
+
 	protected SentenceCounter counter;
-	
+
 	protected JButton wordButton;
 	protected JButton charButton;
 	protected JButton pasteButton;
@@ -65,31 +65,31 @@ public class GUI extends JPanel implements ClipboardOwner {
 	private JTextField maxInput;
 	private JTextField searchInput;
 	private JTextField URLInput;
-	
+
 	private DefaultListModel<String> textListModel;
 	private JList<String> textList;
 	private JScrollPane textPane;
-	
+
 	private DefaultListModel<String> commonListModel;
 	private JList<String> commonList;
 	private JScrollPane commonPane;
-	
+
 	protected JTextArea sentenceTextArea;
 	private JScrollPane sentencePane;
-	
+
 	private List<SentenceEntry> sentenceList;
 	private List<SentenceEntry> commonWordList;
-	
-	
+
+
 	/**
 	 * Creates a panel for all content.
 	 *
 	 */
 
 	public GUI() {
-		
+
 		super(new BorderLayout());
-		
+
 		Color color = new Color(238,238,238);
 
 		this.setBackground(color);
@@ -147,7 +147,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 		wordButton.addActionListener(new wordAction());
 //		wordButton.putClientProperty("JButton.buttonType", "gradient");
 
-		
+
 		charButton = new JButton("CharCount");
 		charButton.setEnabled(false);
 		charButton.addActionListener(new charAction());
@@ -157,8 +157,8 @@ public class GUI extends JPanel implements ClipboardOwner {
 		pasteButton = new JButton("Paste");
 		pasteButton.addActionListener(new pasteAction());
 //		pasteButton.putClientProperty("JButton.buttonType", "gradient");
-		
-		
+
+
 		URLButton = new JButton("URL search");
 		URLButton.addActionListener(new URLAction());
 //		URLButton.addActionListener(new );
@@ -186,8 +186,8 @@ public class GUI extends JPanel implements ClipboardOwner {
 		searchInput = new JTextField();
 		searchInput.setMaximumSize(new Dimension(430, 30));
 		searchInput.setPreferredSize(new Dimension(430, 30));
-		
-		
+
+
 		JLabel URLLabel = new JLabel("input URL: ");
 
 		URLInput = new JTextField();
@@ -198,7 +198,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 		JPanel firstPanel = new JPanel();
 		JPanel secondPanel = new JPanel();
-		
+
 		JPanel inputPanel = new JPanel();
 		JPanel searchPanel = new JPanel();
 		JPanel URLPanel = new JPanel();
@@ -209,27 +209,27 @@ public class GUI extends JPanel implements ClipboardOwner {
 		inputPanel.add(pasteButton);
 		inputPanel.setBackground(color);
 		inputPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-		
+
 		sizePanel.add(wordButton);
 		sizePanel.add(charButton);
 		sizePanel.setBackground(color);
 		sizePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-		
+
 		sizeInputPanel.add(minLabel);
 		sizeInputPanel.add(minInput);
 		sizeInputPanel.add(maxLabel);
 		sizeInputPanel.add(maxInput);
 		sizeInputPanel.setBackground(color);
 		sizeInputPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-		
+
 		searchPanel.add(searchLabel);
 		searchPanel.add(searchInput);
 		searchPanel.setBackground(color);
-		
+
 		URLPanel.add(URLLabel);
 		URLPanel.add(URLInput);
 		URLPanel.setBackground(color);
-		
+
 		firstPanel.add(inputPanel);
 		firstPanel.add(URLPanel);
 		firstPanel.add(URLButton);
@@ -240,7 +240,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 		secondPanel.add(searchPanel);
 		secondPanel.setBackground(color);
 		secondPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 50));
-		
+
 		setLayout(new FlowLayout());
 		add(firstPanel, BorderLayout.PAGE_START);
 		add(secondPanel, BorderLayout.WEST);
@@ -253,7 +253,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 	private void setCommonWords() {
 
 		commonWordList = counter.getCommonList();
-		
+
 		for (SentenceEntry e : commonWordList) {
 
 			commonListModel.addElement("[ " + e.size + " ] " + e.text);
@@ -329,7 +329,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 	 * Displays sentence selected from sentenceList
 	 *
 	 */
-	
+
 	private  void setSentence() {
 
 		String string = "";
@@ -341,7 +341,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 		} catch (ArrayIndexOutOfBoundsException e) {
 
 			e.printStackTrace();
-			
+
 		}
 
 		setClipboardContents(string);
@@ -404,7 +404,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 	/**
 	 * CTRL-C marks the inputed string.
-	 * 
+	 *
 	 */
 
 	private  void setClipboardContents(String aString) {
@@ -424,7 +424,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 		commonListModel.clear();
 
 	}
-	
+
 	/**
 	 * returns a string with info/text plus some graphics,
 	 *
@@ -474,7 +474,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 		}
 	}
 
-	
+
 	/**
 	 * Listen for pressing of "URL search" button.
 	 *
@@ -484,20 +484,20 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			try {
-				
+
 				counter = new SentenceCounter();
 				counter.sentenceBuilder("U", URLInput.getText());
-				
+
 			} catch (fileNotFoundException e1) {
-				
+
 				e1.printStackTrace();
 			} catch (PasteInputException e1) {
-				
+
 				e1.printStackTrace();
 			}
-			
+
 			wordButton.setEnabled(true);
 			charButton.setEnabled(true);
 
@@ -513,7 +513,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			
+
 			if(e.getValueIsAdjusting()){
 				setSentence();
 			}
@@ -525,7 +525,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			
+
 		}
 
 		@Override
@@ -589,7 +589,7 @@ public class GUI extends JPanel implements ClipboardOwner {
 
 					sentenceTextArea.append(e2.getMessage());
 				}
-				
+
 				wordButton.setEnabled(true);
 				charButton.setEnabled(true);
 
@@ -665,11 +665,11 @@ public class GUI extends JPanel implements ClipboardOwner {
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(new Runnable() {
-			
+
 			public void run() {
-				
+
 				UIManager.put("swing.boldMetal", Boolean.FALSE);
-				frame = new JFrame("TwitterHelper");
+				frame = new JFrame("WordCount");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setLocation(10, 10);
 				frame.setMinimumSize(new Dimension(1200, 700));
